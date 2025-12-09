@@ -197,9 +197,13 @@ body {
 /* IMAGEN SIEMPRE IGUAL */
 .story-card img {
     width: 100%;
-    aspect-ratio: 2 / 3;  /* 🔥 controla TODO */
-    object-fit: cover;
+    aspect-ratio: 2 / 3;
+    object-fit: contain;      /* NO recorta la default */
+    background: var(--card-bg);
+    padding: 6px;             /* espacio elegante para imágenes cuadradas */
+    border-radius: 10px;      /* mantiene estética */
 }
+
 
 /* TEXTO CONTROLADO */
 .story-card .card-body {
@@ -712,4 +716,152 @@ body:not(.light-theme) .episode-box {
 body.light-theme .episode-box {
     background-color: #ffffff !important;
     color: #000 !important;
+}
+
+.user-card {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--card-border);
+}
+
+/* Tarjeta de usuario en modo oscuro */
+body:not(.light-theme) .user-result-card {
+    background: #1a1a1f;
+    color: #fff;
+}
+
+/* Tarjeta en modo claro */
+body.light-theme .user-result-card {
+    background: #f7f7f7;
+    color: #000;
+}
+
+/* Texto visible en modo claro */
+body.light-theme .user-result-card a,
+body.light-theme .user-result-card span,
+body.light-theme .user-result-card {
+    color: #222 !important;
+}
+
+/* ---------------------------
+   PERFIL – CAMBIAR CONTRASEÑA
+   Corrección del botón en modo claro
+----------------------------*/
+body.light-theme .btn-outline-light {
+    color: #222 !important;          /* Texto negro */
+    background: #ffffff !important;  /* Fondo blanco */
+    border-color: #ddd !important;   /* Borde gris claro */
+}
+
+body.light-theme .btn-outline-light:hover {
+    background: #f5f5f5 !important;  /* Hover suave */
+    color: #000 !important;
+}
+
+/* ----------------------------------
+   FORMULARIOS GRANDES (MODO CLARO)
+-------------------------------------*/
+body.light-theme .form-card,
+body.light-theme .story-form-card,
+body.light-theme .episode-form-card,
+body.light-theme .profile-form-card {
+    background: #ffffff !important;
+    color: #000 !important;
+    border: 1px solid #e5e5e5 !important;
+}
+/* ---------- MODO OSCURO (por defecto) ---------- */
+.form-card {
+    background: #1b1b1f !important;
+    border: 1px solid #333;
+    color: #fff !important;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+    background: #1b1b1f !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+}
+
+
+/* Inputs en modo claro */
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme select {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #cfcfcf !important;
+}
+
+/* Hover */
+body.light-theme input:hover,
+body.light-theme textarea:hover,
+body.light-theme select:hover {
+    border-color: #aaa !important;
+}
+
+/* Botón de enviar para historias/capítulos */
+body.light-theme .btn-primary {
+    background: #ff7db5 !important;
+    border-color: #ff7db5 !important;
+}
+
+body.light-theme .btn-primary:hover {
+    background: #ff5da6 !important;
+}
+
+/* FORMULARIOS – MODO OSCURO (por defecto) */
+form.card {
+    background: #1b1b1f !important;
+    border: 1px solid #333 !important;
+    color: #fff !important;
+}
+
+form.card input,
+form.card textarea,
+form.card select {
+    background: #1b1b1f !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+}
+
+/* FORMULARIOS – MODO CLARO */
+body.light-theme form.card {
+    background: #ffffff !important;
+    border: 1px solid #ddd !important;
+    color: #000 !important;
+}
+
+body.light-theme form.card input,
+body.light-theme form.card textarea,
+body.light-theme form.card select {
+    background: #ffffff !important;
+    color: #000 !important;
+    border: 1px solid #bbb !important;
+}
+
+/* ================================
+   FIX PARA BUSCADOR EN NAVBAR
+================================ */
+
+.navbar .form-control {
+    background-color: #2a2a2f !important;   /* gris oscuro visible */
+    color: #ffffff !important;              /* texto blanco */
+    border: 1px solid #444 !important;
+}
+
+.navbar .form-control::placeholder {
+    color: #bbbbbb !important;              /* placeholder visible */
+}
+
+/* MODO CLARO */
+.light-theme .navbar .form-control {
+    background-color: #ffffff !important;
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+}
+
+.light-theme .navbar .form-control::placeholder {
+    color: #666 !important;
 }

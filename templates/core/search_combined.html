@@ -61,7 +61,7 @@
 
     {% for user in user_results %}
     <a href="{% url 'public_profile' user.username %}" class="text-decoration-none">
-        <div class="d-flex align-items-center p-2 mb-2 rounded" style="background:#1a1a1f;">
+        <div class="d-flex align-items-center p-2 mb-2 rounded user-result-card">
 
             <img src="{{ user.profile.avatar.url }}"
                  style="width:45px;height:45px;border-radius:50%;object-fit:cover;margin-right:15px;">

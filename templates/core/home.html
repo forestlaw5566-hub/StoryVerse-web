@@ -21,13 +21,11 @@
                 </a>
             {% endif %}
 
-            <a href="{% url 'story_detail' story.slug %}">
-                {% if story.cover_image %}
-                    <img src="{{ story.cover_image.url }}" class="card-img-top">
-                {% else %}
-                    <img src="/static/default_cover.jpg" class="card-img-top">
-                {% endif %}
-            </a>
+            {% if story.cover_image %}
+                <img src="{{ story.cover_image.url }}" class="card-img-top" alt="Portada">
+            {% else %}
+                <img src="/media/covers/default_cover.jpg" class="card-img-top" alt="Portada">
+            {% endif %}
 
             <div class="card-body">
                 <h4 class="card-title">{{ story.title }}</h4>

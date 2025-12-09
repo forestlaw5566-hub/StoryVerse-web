@@ -37,7 +37,12 @@ class Story(models.Model):
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    cover_image = models.ImageField(upload_to="covers/", blank=True, null=True)
+    cover_image = models.ImageField(
+        upload_to="covers/",
+        default="covers/default_cover.jpg",
+        blank=True,
+        null=True
+    )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
     views = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

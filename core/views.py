@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 
 
 def home(request):
@@ -297,17 +298,22 @@ def register_view(request):
     return render(request, "core/register.html", {"form": form})
 
 def login_view(request):
+
+    storage = get_messages(request)
+    list(storage)
+    storage.used = True
+
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user:
             login(request, user)
             return redirect("home")
         else:
-            messages.error(request, "Usuario o contraseña incorrectos")
+            messages.error(request, "Credenciales incorrectas.")
 
     return render(request, "core/login.html")
 
@@ -365,9 +371,15 @@ def delete_comment(request, comment_id):
 
     if request.user == com.user:
         episode = com.episode
+        story = episode.story   # ← AQUÍ SE OBTIENE LA HISTORIA
+
         com.delete()
 
-        return redirect("episode_detail", slug=episode.story.slug, number=episode.number)
+        return redirect(
+            "episode_detail",
+            story_slug=story.slug,
+            number=episode.number
+        )
 
     return redirect('home')
 

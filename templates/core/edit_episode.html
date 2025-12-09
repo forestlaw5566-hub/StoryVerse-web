@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}Editar capítulo{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Editar capítulo: {{ episode.title }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Número de capítulo</label>
+        <input type="number" name="number" class="form-control mb-3" value="{{ episode.number }}" required>
+
+        <label>Título</label>
+        <input type="text" name="title" class="form-control mb-3" value="{{ episode.title }}" required>
+
+        <label>Contenido</label>
+        <textarea name="content" rows="12" class="form-control mb-3">{{ episode.content }}</textarea>
+
+        <button class="btn btn-success">Guardar cambios</button>
+    </form>
+
+</div>
+{% endblock %}

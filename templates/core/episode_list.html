@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block title %}Capítulos de {{ story.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Capítulos de {{ story.title }}</h2>
+
+    {% if user == story.author %}
+        <a href="{% url 'create_episode' story.slug %}" class="btn btn-primary mb-3">
+            ➕ Agregar capítulo
+        </a>
+    {% endif %}
+
+    <ul class="list-group">
+        {% for ep in episodes %}
+            <li class="list-group-item" style="background:#1a1a1a; color:white;">
+                <a href="{% url 'episode_detail' story.slug ep.number %}" 
+                   class="text-light">
+                    Capítulo {{ ep.number }} – {{ ep.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

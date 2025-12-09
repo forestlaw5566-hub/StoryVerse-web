@@ -1,0 +1,70 @@
+{% extends "core/base.html" %}
+{% block title %}Editar historia{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Editar historia</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Título -->
+        <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text"
+                   name="title"
+                   class="form-control"
+                   value="{{ story.title }}"
+                   required>
+        </div>
+
+        <!-- Descripción -->
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea name="description"
+                      rows="4"
+                      class="form-control"
+                      required>{{ story.description }}</textarea>
+        </div>
+
+        <!-- Categoría -->
+        <div class="mb-3">
+            <label class="form-label">Categoría</label>
+            <select name="category" id="category" class="form-select">
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}"
+                            {% if story.category == cat %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Portada actual + nueva portada -->
+        <div class="mb-3">
+            <label class="form-label d-block">Portada actual</label>
+            {% if story.cover_image %}
+                <img src="{{ story.cover_image.url }}"
+                     alt="Portada actual"
+                     class="img-fluid mb-2"
+                     style="max-width: 240px; border-radius: 12px;">
+            {% else %}
+                <p class="text-muted">Esta historia no tiene portada.</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Cambiar portada (opcional)</label>
+            <input type="file" name="cover_image" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Guardar cambios
+        </button>
+
+        <a href="{% url 'author_dashboard' %}" class="btn btn-secondary ms-2">
+            Cancelar
+        </a>
+    </form>
+</div>
+{% endblock %}

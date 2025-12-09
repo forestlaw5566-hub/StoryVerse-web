@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ story.title }} · StoryVerse{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold mb-3">{{ story.title }}</h1>
+
+<p class="text-secondary">{{ story.description }}</p>
+
+<h3 class="mt-4">Episodios</h3>
+<ul class="list-group mt-3">
+  {% for ep in episodes %}
+    <li class="list-group-item episode-item">
+        <a href="{% url 'episode_detail' story.slug ep.number %}" class="episode-link">
+            Episodio {{ ep.number }} — {{ ep.title }}
+        </a>
+    </li>
+  {% empty %}
+    <li class="list-group-item bg-dark text-light">No hay episodios aún.</li>
+  {% endfor %}
+</ul>
+
+<hr>
+
+<div class="d-flex justify-content-between mt-4">
+
+    {% if prev_story %}
+        <a href="{% url 'story_detail' prev_story.slug %}" class="btn btn-outline-secondary">
+            ⬅ {{ prev_story.title }}
+        </a>
+    {% else %}
+        <span></span>
+    {% endif %}
+
+    {% if next_story %}
+        <a href="{% url 'story_detail' next_story.slug %}" class="btn btn-outline-secondary">
+            {{ next_story.title }} ➜
+        </a>
+    {% endif %}
+
+</div>
+
+{% endblock %}

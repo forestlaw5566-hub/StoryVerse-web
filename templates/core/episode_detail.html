@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ episode.title }} · StoryVerse{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold">{{ episode.title }}</h1>
+<p class="text-secondary">Episodio {{ episode.number }} de {{ story.title }}</p>
+
+<div class="episode-box mt-4">
+    <p>{{ episode.content|linebreaks }}</p>
+</div>
+
+<div class="d-flex justify-content-between my-4">
+
+    {% if prev_episode %}
+    <a class="btn btn-outline-light"
+       href="{% url 'episode_detail' story.slug prev_episode.number %}">
+       ⬅ Episodio {{ prev_episode.number }}
+    </a>
+    {% else %}
+    <span></span>
+    {% endif %}
+
+    {% if next_episode %}
+    <a class="btn btn-outline-light"
+       href="{% url 'episode_detail' story.slug next_episode.number %}">
+       Episodio {{ next_episode.number }} ➡
+    </a>
+    {% endif %}
+
+</div>
+
+<div class="comments-box mt-5">
+    <h3 class="mb-4">Comentarios</h3>
+
+    {% if user.is_authenticated %}
+    <form method="post" class="mb-4">
+        {% csrf_token %}
+        <textarea name="text" class="form-control comment-input" placeholder="Escribe un comentario..." required></textarea>
+        <button class="btn comment-btn mt-2">Comentar</button>
+    </form>
+    {% else %}
+    <p class="text-secondary">Inicia sesión para comentar.</p>
+    {% endif %}
+
+    <hr>
+
+    {% for com in comments %}
+    <div class="comment-card d-flex">
+        
+        <!-- Avatar -->
+        <img src="{% if com.user.profile.avatar %}{{ com.user.profile.avatar.url }}{% else %}/static/default_avatar.png{% endif %}"
+             class="comment-avatar">
+
+        <div class="comment-body">
+            <div class="d-flex justify-content-between">
+                <strong>{{ com.user.username }}</strong>
+                
+                {% if user == com.user %}
+                <div class="comment-actions">
+                    <a href="{% url 'edit_comment' com.id %}" class="edit-btn">Editar</a>
+                    <a href="{% url 'delete_comment' com.id %}" class="delete-btn">Eliminar</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <p class="mb-1">{{ com.text }}</p>
+            <small class="date">{{ com.created_at }}</small>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-secondary">Sé el primero en comentar.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

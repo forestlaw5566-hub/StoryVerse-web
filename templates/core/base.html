@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StoryVerse{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark border-bottom border-secondary mb-4 sticky-top">
+    <div class="container">
+
+        <a class="navbar-brand" href="/">StoryVerse</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Inicio</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/historias/">Historias</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        Categorías
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        {% for category in categories_nav %}
+                        <li>
+                            <a class="dropdown-item"
+                               href="{% url 'category_detail' category.slug %}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="d-flex ms-3" role="search" action="{% url 'search' %}">
+                <input name="q" class="form-control form-control-sm me-2"
+                       type="search" placeholder="Buscar historias..." aria-label="Buscar">
+            </form>
+
+            <ul class="navbar-nav ms-3">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'profile' %}" class="nav-link btn-nav">Perfil</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'author_dashboard' %}" class="nav-link btn-nav">Mis historias</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'my_library' %}" class="nav-link btn-nav">Mi Biblioteca</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="nav-link btn-nav">Cerrar sesión</a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link btn-nav">Ingresar</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'register' %}" class="nav-link btn-nav btn-pink">Registrarse</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <button id="themeToggle" class="btn-nav ms-3" style="cursor:pointer;">🌙</button>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+
+<!-- 🟣 Notificaciones -->
+<div id="notif-container"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* ----------------------------------------------------------
+       🌓 MODO CLARO / OSCURO
+    ----------------------------------------------------------- */
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+        document.body.classList.add("light-theme");
+    }
+
+    const themeButton = document.getElementById("themeToggle");
+    function updateIcon() {
+        themeButton.textContent =
+            document.body.classList.contains("light-theme") ? "☀️" : "🌙";
+    }
+
+    themeButton.addEventListener("click", () => {
+        document.body.classList.toggle("light-theme");
+        localStorage.setItem("theme",
+            document.body.classList.contains("light-theme") ? "light" : "dark");
+        updateIcon();
+    });
+
+    updateIcon();
+
+
+    /* ----------------------------------------------------------
+       ⭐ NOTIFICACIONES
+    ----------------------------------------------------------- */
+    function showNotif(text) {
+        const container = document.getElementById("notif-container");
+        const notif = document.createElement("div");
+
+        notif.className = "notif";
+        notif.textContent = text;
+
+        container.appendChild(notif);
+
+        setTimeout(() => {
+            notif.classList.add("notif-hide");
+            notif.addEventListener("animationend", () => notif.remove());
+        }, 2000);
+    }
+
+
+    /* ----------------------------------------------------------
+       ⭐ FAVORITOS (AJAX)
+    ----------------------------------------------------------- */
+    document.querySelectorAll(".favorite-toggle").forEach(btn => {
+        btn.addEventListener("click", async function(event) {
+            event.preventDefault();
+
+            const url = this.getAttribute("href");
+
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                });
+
+                const data = await response.json();
+
+
+                /* ★ Cambiar icono */
+                if (data.favorite) {
+                    this.textContent = "★";
+                    this.classList.remove("fav-remove");
+                    this.classList.add("fav-active");
+                    showNotif("Guardado en tu Biblioteca");
+
+                } else {
+                    this.textContent = "☆";
+                    this.classList.remove("fav-active");
+                    this.classList.add("fav-remove");
+                    showNotif("Eliminado de tu Biblioteca");
+                }
+
+
+                /* ----------------------------------------------------------
+                   ❗ ELIMINAR TARJETA SOLO EN /mi-biblioteca/
+                ----------------------------------------------------------- */
+                if (!data.favorite && window.location.pathname.includes("mi-biblioteca")) {
+
+                    const card = this.closest(".story-card");
+
+                    if (card) {
+                        card.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+                        card.style.opacity = "0";
+                        card.style.transform = "scale(0.95)";
+
+                        setTimeout(() => card.remove(), 400);
+                    }
+                }
+
+
+                /* Limpieza de animaciones */
+                this.addEventListener("animationend", () => {
+                    this.classList.remove("fav-active", "fav-remove");
+                });
+
+            } catch (error) {
+                console.error("Error en favoritos AJAX:", error);
+            }
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>

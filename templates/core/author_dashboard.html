@@ -1,0 +1,66 @@
+{% extends "core/base.html" %}
+{% block title %}Mis historias{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Mis historias</h2>
+
+    <a href="{% url 'create_story' %}" class="btn btn-success mb-3">➕ Crear nueva historia</a>
+
+    {% if stories %}
+        <div class="row">
+            {% for story in stories %}
+                <div class="col-md-4 mb-3">
+                    <div class="card story-card">
+
+                        {% if story.cover_image %}
+                            <img src="{{ story.cover_image.url }}" class="card-img-top">
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ story.title }}</h5>
+                            <p class="text-muted">{{ story.category }}</p>
+
+                            <!-- Ver historia -->
+                            <a href="{% url 'story_detail' story.slug %}" 
+                               class="btn btn-outline-light btn-view">
+                                Ver historia
+                            </a><br>
+
+                            <!-- Ver capítulos -->
+                            <a href="{% url 'episode_list' story.slug %}" 
+                               class="btn btn-outline-info btn-sm mt-1">
+                                📄 Ver capítulos
+                            </a>
+
+                            <!-- Crear capítulo -->
+                            <a href="{% url 'create_episode' story.slug %}"
+                               class="btn btn-outline-success btn-sm mt-1">
+                                ➕ Nuevo capítulo
+                            </a>
+
+                            <!-- Editar historia -->
+                            <a href="{% url 'edit_story' story.id %}"
+                               class="btn btn-warning btn-sm mt-1">
+                                ✏️ Editar historia
+                            </a>
+
+                            <!-- Eliminar historia -->
+                            <a href="{% url 'delete_story' story.id %}" 
+                               class="btn btn-danger btn-sm mt-1"
+                               onclick="return confirm('¿Eliminar esta historia? Esta acción no se puede deshacer.')">
+                                🗑️ Eliminar historia
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No has creado ninguna historia aún.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

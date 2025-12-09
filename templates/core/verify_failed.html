@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% block title %}Verificación fallida{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center mt-5">
+    <div class="card bg-dark text-light p-4 shadow-lg"
+         style="max-width: 500px; width: 100%; border-radius: 14px;">
+
+        <h3 class="text-center mb-3">❌ Error de verificación</h3>
+
+        <p class="text-center text-muted mb-3">
+            El enlace de verificación no es válido o ha expirado.
+        </p>
+
+        <div class="d-grid">
+            <a href="{% url 'profile' %}" class="btn btn-outline-light">
+                Volver al perfil
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

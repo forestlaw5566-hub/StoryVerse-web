@@ -1,0 +1,647 @@
+/* ------------------------------------
+   VARIABLES GLOBALES (DARK / LIGHT)
+-------------------------------------- */
+
+:root {
+    --bg-color: #0f0f14;
+    --text-color: #ffffff;
+
+    --navbar-bg: #111119;
+    --navbar-text: #ffffff;
+
+    --dropdown-bg: #1c1c24;
+    --dropdown-hover-bg: #ff7db5;
+
+    --card-bg: #1a1a22;
+    --card-border: #2a2a35;
+
+    --input-bg: #1f1f2a;
+
+    --border-color: #2a2a35;
+    --hr-color: #2a2a35;
+
+    --muted-text: #c7c7d3;
+
+    --button-border: #ff7db5;
+    --button-hover-bg: #ff7db5;
+    --button-hover-text: #000;
+    --content-bg: #ffffff;
+}
+
+/* MODO CLARO */
+.light-theme {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+
+    --navbar-bg: #ffffff;
+    --navbar-text: #000000;
+
+    --dropdown-bg: #f3f3f3;
+    --dropdown-hover-bg: #ff7db5;
+
+    --card-bg: #f7f7f7;
+    --card-border: #d0d0d0;
+
+    --input-bg: #ffffff;
+
+    --border-color: #cccccc;
+    --hr-color: #cccccc;
+
+    --muted-text: #555;
+    --content-bg: #f4f4f4;
+
+}
+
+
+/* ------------------------------------
+   GENERAL
+-------------------------------------- */
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.25s, color 0.25s;
+    font-family: 'Inter', sans-serif;
+}
+
+
+/* ------------------------------------
+   NAVBAR
+-------------------------------------- */
+
+.navbar {
+    background: var(--navbar-bg);
+    color: var(--navbar-text);
+    backdrop-filter: blur(6px);
+}
+
+.navbar-brand {
+    color: #ff7db5 !important;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.nav-link {
+    color: var(--navbar-text) !important;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #ff7db5 !important;
+}
+
+.navbar-nav .nav-item {
+    margin-right: 5px;
+}
+
+
+
+/* BOTÓN DE NAVEGACIÓN */
+.btn-nav {
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--button-border);
+    color: var(--button-border) !important;
+    transition: 0.2s;
+}
+
+.btn-nav:hover {
+    background: var(--button-hover-bg);
+    color: var(--button-hover-text) !important;
+}
+
+/* Botón rosa */
+.btn-pink {
+    background-color: #ff7db5;
+    color: #000 !important;
+    border-radius: 6px;
+}
+
+.btn-pink:hover {
+    background-color: #ff539f;
+}
+
+/* Botones dentro del contenido */
+.btn-view {
+    border: 1px solid var(--button-border);
+    color: var(--button-border);
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.btn-view:hover {
+    background: var(--button-hover-bg);
+    color: var(--button-hover-text);
+}
+
+
+/* Botón de tema */
+#themeToggle {
+    border: 1px solid var(--button-border);
+    color: var(--button-border);
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: transparent;
+    transition: 0.2s;
+}
+
+#themeToggle:hover {
+    background: var(--button-hover-bg);
+    color: var(--button-hover-text);
+}
+
+
+/* ------------------------------------
+   DROPDOWN CATEGORÍAS
+-------------------------------------- */
+
+.dropdown-menu {
+    background: var(--dropdown-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    margin-top: 12px !important;
+}
+
+.dropdown-item {
+    color: var(--text-color) !important;
+    padding: 10px 20px;
+}
+
+.dropdown-item:hover {
+    background: var(--dropdown-hover-bg) !important;
+    color: var(--button-hover-text) !important;
+}
+
+
+/* ===========================================
+   TARJETA DE HISTORIA — DISEÑO ESTABLE
+   =========================================== */
+
+.story-card {
+    width: 100%;
+    max-width: 320px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+.story-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+}
+
+/* IMAGEN SIEMPRE IGUAL */
+.story-card img {
+    width: 100%;
+    aspect-ratio: 2 / 3;  /* 🔥 controla TODO */
+    object-fit: cover;
+}
+
+/* TEXTO CONTROLADO */
+.story-card .card-body {
+    padding: 12px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.story-card .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 2px 0;
+}
+
+.story-card .category {
+    font-size: .85rem;
+    color: #bbb;
+}
+.favorite-count {
+    color: #ffd447 !important;   /* amarillo visible */
+    font-size: 1.1rem !important;
+    text-align: center;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+
+
+/* ------------------------------------
+   FORMULARIOS (LOGIN / REGISTER)
+-------------------------------------- */
+
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+.form-group input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #ff7db5;
+    box-shadow: 0 0 4px #ff7db5;
+}
+
+.helptext {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: var(--muted-text);
+}
+
+.errorlist {
+    color: #ff6b6b;
+    margin-top: 5px;
+    list-style: none;
+    padding-left: 0;
+}
+/* FORMULARIOS GRANDES Y CENTRADOS (LOGIN / REGISTER) */
+.form-container {
+    max-width: 480px;   /* Tamaño ideal */
+    width: 100%;
+    margin: 0 auto;     /* Centrado */
+}
+
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-container .form-group {
+    width: 100%;
+}
+
+.form-container button {
+    width: 100%;
+}
+.auth-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 500px;   /* ← SE VE MUCHO MÁS ELEGANTE */
+    border: 1px solid var(--card-border);
+}
+
+
+
+/* ------------------------------------
+   PERFIL
+-------------------------------------- */
+
+.profile-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    max-width: 600px;
+    margin: auto;
+}
+
+.profile-avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff7db5;
+    margin-bottom: 15px;
+}
+
+
+/* ------------------------------------
+   UTILERÍA
+-------------------------------------- */
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.text-muted {
+    color: var(--muted-text) !important;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+hr {
+    border-color: var(--hr-color);
+}
+
+.story-card h3,
+.story-card h4,
+.story-card h5,
+.story-card h6,
+.story-card p,
+.story-card span {
+    color: var(--text-color) !important;
+}
+
+.favorite-toggle {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 28px;
+    color: var(--button-border);
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+    user-select: none;
+    z-index: 10;
+}
+
+.favorite-toggle:hover {
+    transform: scale(1.25);
+    color: var(--button-hover-bg);
+}
+
+/* Animación POP al activar favorito */
+@keyframes fav-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.6); }
+    70%  { transform: scale(0.85); }
+    100% { transform: scale(1.2); }
+}
+
+/* Animación al quitar favorito */
+@keyframes fav-unpop {
+    0%   { transform: scale(1.2); }
+    50%  { transform: scale(0.8); }
+    100% { transform: scale(1); }
+}
+
+.favorite-toggle.fav-active {
+    animation: fav-pop 0.25s ease-out;
+}
+
+.favorite-toggle.fav-remove {
+    animation: fav-unpop 0.25s ease-out;
+}
+
+#notif-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.notif {
+    padding: 12px 18px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    opacity: 0;
+    transform: translateX(30px);
+    animation: notif-slide 0.4s forwards;
+}
+
+@keyframes notif-slide {
+    0% { opacity: 0; transform: translateX(30px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+.notif-hide {
+    animation: notif-hide 0.4s forwards;
+}
+
+@keyframes notif-hide {
+    0% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(30px); }
+}
+
+/* Tema claro */
+body.light-theme .notif {
+    background: rgba(0, 0, 0, 0.1);
+    color: black;
+}
+
+.favorite-count {
+    font-size: 0.9rem;
+    color: #ffdd77;
+    font-weight: bold;
+}
+
+
+/* Caja del episodio totalmente adaptada a Light/Dark */
+.episode-box {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    padding: 20px;
+    border-radius: 10px;
+    line-height: 1.7;
+}
+
+/* -------------------------------------------------------
+   LISTA DE EPISODIOS (modo claro y oscuro compatible)
+-------------------------------------------------------- */
+
+.episode-item {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--card-border) !important;
+}
+
+.episode-item:hover {
+    background: var(--dropdown-hover-bg) !important;
+    transition: 0.2s ease-in-out;
+}
+
+.episode-link {
+    color: var(--text-color) !important;
+    text-decoration: none;
+}
+
+.episode-link:hover {
+    color: #fff !important;
+}
+
+form textarea,
+form input {
+    background-color: var(--input-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+form textarea::placeholder,
+form input::placeholder {
+    color: var(--muted-text);
+}
+
+/* ============================
+   COMENTARIOS PROFESIONALES
+===============================*/
+
+.comments-box {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.comment-input {
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.comment-btn {
+    background: #ff7db5;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.comment-btn:hover {
+    background: #ff9dc7;
+}
+
+.comment-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.comment-card .date {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* ============================
+   COMENTARIOS CON AVATAR
+===============================*/
+
+.comment-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 12px;
+}
+
+.comment-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--button-border);
+}
+
+.comment-body {
+    flex: 1;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.edit-btn {
+    color: #7bd3ff;
+}
+
+.delete-btn {
+    color: #ff7070;
+}
+
+.edit-btn:hover {
+    text-decoration: underline;
+}
+
+.delete-btn:hover {
+    text-decoration: underline;
+}
+
+.comment-input {
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.comment-btn {
+    background: #ff7db5;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.comment-btn:hover {
+    background: #ff9dc7;
+}
+
+.favorite-counter {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ffda6b; /* Dorado suave */
+}
+
+/* ============================
+   FIX PARA SELECT Y OPTIONS
+   ============================ */
+
+form select,
+form .form-select {
+    background-color: #1c1c24 !important;
+    color: #ffffff !important;
+    border: 1px solid #444 !important;
+    padding: 10px !important;
+    border-radius: 6px !important;
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+}
+
+form select:focus {
+    outline: 2px solid #ff69b4 !important;
+    border-color: #ff69b4 !important;
+}
+
+form option {
+    background-color: #1c1c24 !important;
+    color: white !important;
+}

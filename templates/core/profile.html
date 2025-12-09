@@ -1,0 +1,81 @@
+{% extends "core/base.html" %}
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center mt-5">
+
+  <div class="card bg-dark text-light p-4 shadow-lg"
+       style="max-width: 480px; width: 100%; border-radius: 14px;">
+
+    <!-- Avatar -->
+    <div class="text-center mb-3">
+      <img src="{{ profile.avatar.url }}"
+           class="rounded-circle shadow"
+           style="width: 140px; height: 140px; object-fit: cover; border: 3px solid #ffb6df;">
+    </div>
+
+    <!-- Username -->
+    <h3 class="text-center mb-1" style="font-weight: 600;">
+      {{ request.user.username }}
+    </h3>
+
+    <!-- Email -->
+    <p class="text-center text-muted mb-1" style="font-size: 0.9rem;">
+      {{ request.user.email|default:"Sin correo registrado" }}
+    </p>
+
+    <!-- NUEVO: Estado de verificación -->
+    {% if request.user.email %}
+        {% if profile.email_verified %}
+            <p class="text-center">
+                <span class="badge bg-success">Correo verificado ✔</span>
+            </p>
+        {% else %}
+            <p class="text-center">
+                <span class="badge bg-warning text-dark">Correo no verificado ✖</span>
+            </p>
+
+            <!-- Botón para iniciar verificación -->
+            <form action="{% url 'send_verification' %}" method="POST" class="text-center mb-3">
+                {% csrf_token %}
+                <button class="btn btn-sm"
+                        style="background:#ffb6df; color:#121212; font-weight:600; border-radius:20px;">
+                    Verificar correo
+                </button>
+            </form>
+        {% endif %}
+    {% endif %}
+    <!-- FIN NUEVO -->
+
+    <!-- Bio -->
+    <p class="text-center text-muted mt-3" style="font-size: 0.95rem;">
+      {% if profile.bio %}
+        {{ profile.bio }}
+      {% else %}
+        <span class="text-secondary">Sin biografía aún...</span>
+      {% endif %}
+    </p>
+
+    <hr style="border-color: #444;">
+
+    <!-- Botones -->
+    <div class="d-grid gap-2 mb-2">
+      <a href="{% url 'edit_profile' %}"
+         class="btn"
+         style="background: #ffb6df; border-color: #ffb6df; color: #121212; font-weight: 600;">
+        Editar perfil
+      </a>
+    </div>
+
+    <div class="d-grid gap-2">
+      <a href="{% url 'change_password' %}"
+         class="btn btn-outline-light"
+         style="border-radius: 999px;">
+        Cambiar contraseña
+      </a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

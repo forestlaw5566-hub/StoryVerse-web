@@ -1,0 +1,80 @@
+{% extends "core/base.html" %}
+{% block title %}Crear cuenta{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+
+    <div class="auth-card">
+
+        <h2>Crear una cuenta</h2>
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+
+            <!-- USUARIO -->
+            <div class="form-group">
+                <label for="id_username">Nombre de usuario</label>
+                {{ form.username }}
+                <small class="helptext">
+                    Debe tener menos de 150 caracteres. Solo letras, números y @/./+/-/_.
+                </small>
+
+                {% if form.username.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.username.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- CONTRASEÑA -->
+            <div class="form-group">
+                <label for="id_password1">Contraseña</label>
+                {{ form.password1 }}
+
+                <small class="helptext">
+                    Debe cumplir lo siguiente:
+                    <ul class="helptext mt-2">
+                        <li>No puede ser similar a tu información personal.</li>
+                        <li>Debe tener mínimo 8 caracteres.</li>
+                        <li>No debe ser una contraseña muy común.</li>
+                        <li>No puede ser completamente numérica.</li>
+                    </ul>
+                </small>
+
+                {% if form.password1.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.password1.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- CONFIRMAR -->
+            <div class="form-group">
+                <label for="id_password2">Confirmar contraseña</label>
+                {{ form.password2 }}
+                <small class="helptext">Repite la contraseña exacta anterior.</small>
+
+                {% if form.password2.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.password2.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <button class="btn btn-pink w-100 mt-3" type="submit">Registrarse</button>
+        </form>
+
+        <div class="text-center mt-3">
+            ¿Ya tienes cuenta?
+            <a href="{% url 'login' %}">Iniciar sesión</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+
+{% block title %}Mi Biblioteca · StoryVerse{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold mb-4">Mi Biblioteca</h1>
+
+<div class="row">
+    {% for fav in favorites %}
+        <div class="col-md-4 mb-4">
+            <div class="story-card p-3">
+
+                <div class="position-relative">
+                    <a href="{% url 'story_detail' fav.story.slug %}">
+                        {% if fav.story.cover_image %}
+                            <img src="{{ fav.story.cover_image.url }}" class="card-img-top">
+                        {% else %}
+                            <img src="/static/default_cover.jpg" class="card-img-top">
+                        {% endif %}
+                    </a>
+
+
+                    <!-- ⭐ Botón de favoritos -->
+                    <a href="{% url 'toggle_favorite' fav.story.id %}"
+                       class="favorite-toggle position-absolute top-0 end-0 m-2 fs-3
+                              {% if fav.story.is_favorited_by_user %}fav-active{% endif %}">
+                        {% if fav.story.is_favorited_by_user %}★{% else %}☆{% endif %}
+                    </a>
+                </div>
+
+                <h4 class="mt-2">{{ fav.story.title }}</h4>
+                <p class="text-muted">{{ fav.story.category }}</p>
+
+                <a href="{% url 'story_detail' fav.story.slug %}" class="btn btn-nav mt-2">
+                    Leer historia
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No tienes historias guardadas aún.</p>
+    {% endfor %}
+</div>
+{% endblock %}

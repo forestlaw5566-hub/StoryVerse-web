@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% block title %}Crear Historia{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Crear nueva historia</h2>
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" class="card p-4" style="background:#1c1c1f; border:1px solid #333; color:white;">
+        {% csrf_token %}
+
+        <label>Título</label>
+        <input type="text" name="title" class="form-control mb-3" required>
+
+        <label>Descripción</label>
+        <textarea name="description" class="form-control mb-3" rows="4" required></textarea>
+
+        <label>Categoría</label>
+        <select name="category" class="form-control mb-3" required>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Portada (opcional)</label>
+        <input type="file" name="cover" class="form-control mb-4">
+
+        <button class="btn btn-primary px-4">Publicar historia</button>
+    </form>
+</div>
+{% endblock %}

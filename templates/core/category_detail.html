@@ -1,0 +1,43 @@
+}{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="mb-4">{{ category.name }}</h1>
+
+<div class="row">
+
+    {% for story in stories %}
+    <div class="col-md-3 mb-4">
+        <div class="story-card h-100 position-relative">
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'toggle_favorite' story.id %}" 
+               class="favorite-toggle position-absolute"
+               style="top:10px; right:10px;">
+                {% if story.id in favorite_stories_ids %} ★ {% else %} ☆ {% endif %}
+            </a>
+            {% endif %}
+
+            <a href="{% url 'story_detail' story.slug %}">
+                {% if story.cover_image %}
+                    <img src="{{ story.cover_image.url }}" class="card-img-top">
+                {% else %}
+                    <img src="/static/default_cover.jpg" class="card-img-top">
+                {% endif %}
+            </a>
+
+            <div class="story-content">
+                <h5 class="story-title">{{ story.title }}</h5>
+                <a href="{% url 'story_detail' story.slug %}" class="btn-view mt-2">Ver historia</a>
+                <div class="favorite-count mt-2">⭐ {{ story.favorites_count }}</div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay historias en esta categoría.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

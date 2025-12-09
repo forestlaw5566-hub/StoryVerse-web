@@ -1,0 +1,94 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Editar perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Editar perfil</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="row g-4">
+        {% csrf_token %}
+
+        <!-- Panel izquierdo: datos de cuenta -->
+        <div class="col-md-5">
+            <div class="card p-3">
+                <h5>Cuenta</h5>
+
+                <label>Nombre de usuario</label>
+                <input type="text" name="username" value="{{ user.username }}" class="form-control mb-3">
+
+                <label>Correo electrónico</label>
+                <input type="email" name="email" value="{{ user.email }}" class="form-control">
+            </div>
+        </div>
+
+        <!-- Panel derecho: perfil público -->
+        <div class="col-md-5">
+            <div class="card p-3">
+                <h5>Perfil público</h5>
+
+                <div class="text-center">
+                    <img id="avatarPreview"
+                          src="{{ profile.avatar.url }}"
+                          class="rounded-circle"
+                          width="130" height="130"
+                          style="object-fit: cover; border: 3px solid #ff7db5;">
+
+                    <p class="text-muted">Avatar actual</p>
+                </div>
+
+                <label>Nuevo avatar</label>
+                <input type="file" name="avatar" id="avatar" class="form-control">
+
+                <label>Biografía</label>
+                <textarea name="bio" rows="4" class="form-control">{{ profile.bio }}</textarea>
+            </div>
+        </div>
+
+        <!-- Botón -->
+        <div class="col-12 text-end">
+            <button class="btn btn-pink px-4">Guardar cambios</button>
+        </div>
+    </form>
+</div>
+
+<style>
+.btn-pink {
+    background-color: #ffb6df;
+    color: #000;
+    font-weight: bold;
+}
+.btn-pink:hover {
+    background-color: #ffcdea;
+}
+.card {
+    background: #1c1c1f;
+    border: 1px solid #333;
+    color: #fff;
+}
+label {
+    font-weight: 600;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("avatar");
+    const previewImg = document.getElementById("avatarPreview");
+
+    fileInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                previewImg.src = reader.result;
+            });
+
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}Nuevo capítulo{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Agregar capítulo a: {{ story.title }}</h2>
+
+    <form method="POST" class="card p-4 mt-3" style="background:#1c1c1f; color:white;">
+        {% csrf_token %}
+
+        <label>Número de capítulo</label>
+        <input type="number" name="number" value="{{ next_number }}" class="form-control mb-3" readonly>
+
+        <label>Título</label>
+        <input type="text" name="title" class="form-control mb-3" required>
+
+        <label>Contenido</label>
+        <textarea name="content" class="form-control mb-4" rows="12" required></textarea>
+
+        <button class="btn btn-success">Publicar capítulo</button>
+    </form>
+
+</div>
+{% endblock %}

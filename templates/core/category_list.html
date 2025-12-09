@@ -1,0 +1,22 @@
+{# templates/core/category_list.html #}
+{% extends 'core/base.html' %}
+
+{% block title %}Categorías · StoryVerse{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold mb-4">Categorías</h1>
+
+<div class="row">
+  {% for category in categories %}
+  <div class="col-md-3 mb-3">
+    <a href="{% url 'category_detail' category.slug %}" class="text-decoration-none">
+      <div class="p-3 rounded-3 bg-dark border border-secondary h-100">
+        <h5 class="mb-0 text-light">{{ category.name }}</h5>
+      </div>
+    </a>
+  </div>
+  {% empty %}
+  <p>No hay categorías aún.</p>
+  {% endfor %}
+</div>
+{% endblock %}

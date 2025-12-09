@@ -53,10 +53,17 @@
                 </li>
             </ul>
 
-            <form class="d-flex ms-3" role="search" action="{% url 'search' %}">
-                <input name="q" class="form-control form-control-sm me-2"
-                       type="search" placeholder="Buscar historias..." aria-label="Buscar">
+            <form action="{% url 'search_combined' %}" method="GET" class="d-flex align-items-center" id="searchForm">
+                <input 
+                    type="text" 
+                    name="q" 
+                    class="form-control me-2"
+                    placeholder="Buscar..."
+                    id="searchInput"
+                    required
+                >
             </form>
+
 
             <ul class="navbar-nav ms-3">
                 {% if user.is_authenticated %}
@@ -211,6 +218,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+});
+</script>
+<script>
+document.querySelectorAll(".search-tabs .tab").forEach(btn => {
+    btn.addEventListener("click", function() {
+
+        // activar/desactivar pestañas
+        document.querySelectorAll(".search-tabs .tab").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        // cambiar modo (historias / usuarios)
+        const mode = this.getAttribute("data-target");
+        document.getElementById("searchMode").value = mode;
+
+        // cambiar ruta cuando se presiona Enter
+        const form = document.getElementById("searchForm");
+
+        form.action = "{% url 'search_combined' %}";
+
+    });
 });
 </script>
 

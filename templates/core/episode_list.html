@@ -1,27 +1,48 @@
 {% extends "core/base.html" %}
-{% block title %}Capítulos de {{ story.title }}{% endblock %}
+{% block title %}Capítulos - {{ story.title }}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
 
-    <h2>Capítulos de {{ story.title }}</h2>
+<div class="container mt-4 episode-box">
 
-    {% if user == story.author %}
-        <a href="{% url 'create_episode' story.slug %}" class="btn btn-primary mb-3">
-            ➕ Agregar capítulo
+    <h2 class="mb-3">Capítulos de "{{ story.title }}"</h2>
+
+    <!-- SOLO EL AUTOR PUEDE CREAR CAPÍTULOS -->
+    {% if request.user == story.author %}
+        <a href="{% url 'create_episode' story.slug %}"
+           class="btn btn-success mb-3">
+            ➕ Crear nuevo capítulo
         </a>
     {% endif %}
 
-    <ul class="list-group">
-        {% for ep in episodes %}
-            <li class="list-group-item" style="background:#1a1a1a; color:white;">
-                <a href="{% url 'episode_detail' story.slug ep.number %}" 
-                   class="text-light">
-                    Capítulo {{ ep.number }} – {{ ep.title }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if episodes %}
+        <div class="list-group">
+
+            {% for ep in episodes %}
+            <div class="p-3 mb-2 rounded episode-item d-flex justify-content-between align-items-center">
+
+                <div>
+                    <strong>{{ ep.number }}. {{ ep.title }}</strong><br>
+                    <span class="text-muted">Última edición: {{ ep.updated_at }}</span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="{% url 'episode_detail' story.slug ep.number %}" class="btn btn-outline-primary btn-sm">👁 Ver</a>
+
+                    {% if request.user == story.author %}
+                        <a href="{% url 'edit_episode' ep.id %}" class="btn btn-warning btn-sm">✏ Editar</a>
+                        <a href="{% url 'delete_episode' ep.id %}" class="btn btn-danger btn-sm">🗑 Eliminar</a>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <p class="text-muted">Esta historia aún no tiene capítulos.</p>
+    {% endif %}
 
 </div>
+
 {% endblock %}

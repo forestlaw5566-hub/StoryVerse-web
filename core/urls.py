@@ -14,19 +14,19 @@ urlpatterns = [
     path("categorias/<slug:category_slug>/", views.category_detail, name="category_detail"),
 
     # BUSCADOR
-    path("buscar/", views.search, name="search"),
+    path("buscar/", views.search_combined, name="search_combined"),
 
-    # PERFIL (corregido)
+    # PERFIL
     path("perfil/", views.profile_view, name="profile"),
     path("perfil/editar/", views.edit_profile, name="edit_profile"),
     path("perfil/password/", views.change_password, name="change_password"),
 
-    # CREAR HISTORIAS / EPISODIOS
+    # CREAR HISTORIAS
     path("historias/crear/", views.create_story_view, name="create_story"),
     path("historias/<slug:slug>/capitulos/crear/", views.create_episode_view, name="create_episode"),
     path("historias/<slug:slug>/capitulos/", views.episode_list_view, name="episode_list"),
 
-    # AUTOR PANEL
+    # PANEL
     path("panel/", views.author_dashboard, name="author_dashboard"),
 
     # AUTH
@@ -42,15 +42,21 @@ urlpatterns = [
     path("comentario/<int:comment_id>/editar/", views.edit_comment, name="edit_comment"),
     path("comentario/<int:comment_id>/eliminar/", views.delete_comment, name="delete_comment"),
 
+    # VERIFICACIÓN
     path("perfil/verificar/", views.send_verification, name="send_verification"),
     path("perfil/verificar/<uidb64>/<token>/", views.verify_email, name="verify_email"),
 
+    # MIS HISTORIAS
     path("mis-historias/", views.my_stories, name="my_stories"),
 
+    # EDITAR / ELIMINAR
     path("editar-historia/<int:story_id>/", views.edit_story, name="edit_story"),
     path("eliminar-historia/<int:story_id>/", views.delete_story, name="delete_story"),
-
     path("editar-capitulo/<int:episode_id>/", views.edit_episode, name="edit_episode"),
     path("eliminar-capitulo/<int:episode_id>/", views.delete_episode, name="delete_episode"),
 
+    # PERFILES PÚBLICOS + FOLLOW
+    path("usuario/<str:username>/", views.public_profile, name="public_profile"),
+    path("seguir/<str:username>/", views.toggle_follow, name="toggle_follow"),
+    path("@<str:username>/", views.public_profile, name="public_profile_short"),
 ]

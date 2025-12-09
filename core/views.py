@@ -1,11 +1,10 @@
 from django.contrib.auth import update_session_auth_hash, login, authenticate, logout
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from .models import Story, Episode, Category, Comment, Profile, Favorite
+from .models import Story, Episode, Category, Comment, Profile, Favorite, Follow
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required
-from .forms import UserUpdateForm, ProfileUpdateForm
 from django.utils.encoding import force_bytes
 from django.contrib.auth.models import User
 from django.utils.text import slugify
@@ -13,9 +12,7 @@ from django.core.mail import send_mail
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
-from django.conf import settings
-import os
-
+from django.contrib.auth.models import User
 
 
 def home(request):
@@ -101,11 +98,54 @@ def category_detail(request, category_slug):
         'stories': stories,
     })
 
+def search_combined(request):
+    query = request.GET.get("q", "").strip()
+    stories = Story.objects.filter(title__icontains=query)
+    users = User.objects.filter(username__icontains=query)
+    return render(request, "core/search_combined.html", {
+        "query": query,
+        "story_results": stories,
+        "user_results": users,
+    })
 
-def search(request):
-    query = request.GET.get("q", "")
-    results = Story.objects.filter(title__icontains=query) if query else []
-    return render(request, "search_results.html", {"query": query, "results": results})
+
+def public_profile(request, username):
+    user_obj = get_object_or_404(User, username=username)
+    profile = user_obj.profile
+    stories = user_obj.story_set.all()
+
+    is_following = False
+
+    if request.user.is_authenticated:
+        is_following = Follow.objects.filter(
+            follower=request.user,
+            following=user_obj
+        ).exists()
+
+    return render(request, "core/public_profile.html", {
+        "profile_user": user_obj,
+        "profile": profile,
+        "stories": stories,
+        "is_following": is_following,
+    })
+
+@login_required
+def toggle_follow(request, username):
+    target = get_object_or_404(User, username=username)
+
+    # Evitar seguirse a uno mismo
+    if target == request.user:
+        return redirect("public_profile", username=username)
+
+    follow_obj, created = Follow.objects.get_or_create(
+        follower=request.user,
+        following=target
+    )
+
+    if not created:
+        follow_obj.delete()  # dejar de seguir
+
+    return redirect("public_profile", username=username)
 
 
 @login_required
